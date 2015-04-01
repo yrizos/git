@@ -49,7 +49,7 @@ class Repository extends Git
      */
     public function getLastRevision()
     {
-        $command = 'rev-list --all --max-count=1';
+        $command = 'rev-list --all';
         $output  = $this->exec($command, true);
 
         return new Revision($this->getDirectory(), $output);
@@ -60,7 +60,7 @@ class Repository extends Git
      */
     public function getFirstRevision()
     {
-        $command = 'rev-list --reverse --all --max-count=1';
+        $command = 'rev-list --reverse --all';
         $output  = $this->exec($command, true);
 
         return new Revision($this->getDirectory(), $output);
