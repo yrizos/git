@@ -16,6 +16,9 @@ class Revision extends Git
     /** @var string */
     private $message;
 
+    /** @var array */
+    private $files;
+
     /**
      * @param $directory
      * @param $hash
@@ -43,6 +46,8 @@ class Revision extends Git
         $this->author  = $output[1];
         $this->date    = $output[2];
         $this->message = $output[3];
+
+        return $this;
     }
 
     /**
@@ -77,6 +82,27 @@ class Revision extends Git
         return $this->message;
     }
 
+    /**
+     * @return array
+     */
+    public function getFiles()
+    {
+        if (null == $this->files) {
+            $dir     = $this->getDirectory();
+            $command = 'show --name-only --pretty=format: ' . $this->getHash();
+            $output  = $this->exec($command);
+            $output  = array_filter($output, function ($item) { return !empty($item); });
+            $output  = array_map(function ($item) use ($dir) {
+                return $dir . DIRECTORY_SEPARATOR . str_replace(["\\", '/'], DIRECTORY_SEPARATOR, $item);
+            }, $output);
+
+            sort($output);
+
+            $this->files = $output;
+        }
+
+        return $this->files;
+    }
 
 
 }

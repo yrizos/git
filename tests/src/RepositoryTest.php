@@ -42,6 +42,23 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Wed Apr 1 11:29:30 2015', $rev->getDate()->format('D M j H:i:s Y'));
     }
 
+    public function testGetRevisionFromTo()
+    {
+
+        $revs = $this->repo->getRevisions('c5d18897f7aa9fec4f150b229ffd5171ca709631', 'a0c438b402d487e5c508ac781773a78c4c936dbb');
+        $revs = array_map(function ($item) {
+            return $item->getHash();
+        }, $revs);
+
+        $actual = [
+            'a0c438b402d487e5c508ac781773a78c4c936dbb',
+            '276fb9e07d77351d659a8d347e42ff2bc81fbc5b',
+            '27ac9634d1765475f54d339e870ff519b3aa7099'
+        ];
+
+        $this->assertEquals($actual, $revs);
+    }
+
     public function testGetFirstLastRevision()
     {
         $revisions = $this->repo->getRevisions();

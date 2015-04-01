@@ -4,6 +4,10 @@ namespace Git;
 
 class Repository extends Git
 {
+
+    /**
+     * @param string|null $directory
+     */
     public function __construct($directory = null)
     {
         if (null == $directory) $directory = getcwd();
@@ -32,12 +36,32 @@ class Repository extends Git
     }
 
     /**
+     * @param string|null $from
+     * @param string|null $to
+     *
+     * @throws \RuntimeException
+     *
      * @return array
      */
-    public function getRevisions()
+    public function getRevisions($from = null, $to = null)
     {
         $command = 'rev-list --all';
         $output  = $this->exec($command);
+
+        if (null !== $from) {
+            $search = array_search($from, $output);
+            if (false === $search) throw new \RuntimeException('Revision ' . $from . ' not found');
+
+            $output = array_slice($output, 0, $search);
+        }
+
+        if (null !== $to) {
+            $search = array_search($to, $output);
+
+            if (false === $search) throw new \RuntimeException('Revision ' . $to . ' not found');
+
+            $output = array_slice($output, $search);
+        }
 
         return array_map(function ($hash) {
             return new Revision($this->getDirectory(), $hash);
