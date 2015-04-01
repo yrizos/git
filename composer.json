@@ -1,0 +1,22 @@
+{
+  "name": "yrizos/berk",
+  "homepage": "https://github.com/yrizos/berk",
+  "type": "tool",
+  "keywords": ["git"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Yannis Rizos",
+      "email": "yrizos@gmail.com",
+      "homepage": "https://twitter.com/yrizos"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Git\\": "src/"
+    }
+  }
+}
